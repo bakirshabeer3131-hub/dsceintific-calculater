@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0b1120;
+            padding: 20px;
+            color: #94a3b8;
+        }
+        .main-border {
+            border: 2px solid #0eb8ef;
+            display: flex;
+            justify-content: center;
+            padding: 8px;
+            width: 100%;
+            max-width: 510px;
+            border-radius: 20px;
+        }
+        .calculater {
+            width: 100%;
+            padding: 10px;
+            max-width: 500px;
+            background: #0b1120;
+            border-radius: 20px;
+            border: 1px solid #0eb8ef;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.4);
+        }
+        .top {
+            text-align: center;
+            font-size: 16px;
+        }
+        .c-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #0eb8ef;
+            padding: 5px 2px;
+            border-radius: 16px;
+        }
+        .screen {
+            padding: 18px;
+            /* margin-bottom: 18px; */
+            border-radius: 16px;
+            background: #0b1120;
+            border: 1px solid #0eb8ef;
+            text-align: right;
+            min-height: 80px;
+            width: 99%;
+        }
+        #expression {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: #94a3b8;
+            font-size: 18px;
+            text-align: right;
+        }
+        #output {
+            display: block;
+            margin-top: 18px;
+            min-height: 34px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #a5b4fc;
+            overflow-wrap: anywhere;
+        }
+        .keys {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            padding-top: 10px;
+        }
+        .key {
+            min-width: 0;
+            min-height: 52px;
+            background: #0b1120;
+            border-radius: 10px;
+            outline: none;
+            border: 1px solid #0eb8ef;
+            color: #94a3b8;
+            font-size: 20px;
+            transition: background 0.15s, transform 0.15s;
+        }
+        #delete-btn{
+            background-color: rgba(200, 000, 25,0.7);
+        }
+        #equal-btn{
+            background-color: rgba(000, 255, 000,0.4);
+            color: white;
+        }
+        .key:hover {
+            background-color: rgba(14, 184, 239,0.8);
+            color: white;
+            box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            font-size: 23px;
+        }
+        .key:active {
+            transform: scale(0.96);
+        }
+        @media all and (min-width:350px) and (max-width:520px) {
+            .top {
+                font-size: 16px;
+            }
+            .calculater {
+                padding: 5px;
+            }
+            .key {
+                min-height: 48px;
+                font-size: 18px;
+            }
+            .result{
+                font-size: 16px;
+            }
+        }
+        .time-date {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .time {
+            border: 1px solid #0eb8ef;
+            padding: 7px 9px;
+            border-radius: 6px;
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 12px;
+            margin: 5px 4px;
+        }
+        .date {
+            border: 1px solid #0eb8ef;
+            padding: 7px 9px;
+            border-radius: 6px;
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 12px;
+            margin: 5px 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-border">
+        <main class="calculater">
+            <div class="top">
+                <h1>Scientific Calculate</h1>
+            </div>
+            <div class="time-date">
+                <div class="time" id="time">00:00:00</div>
+                <div class="date">
+                    <span id="date">Loading date....</span>
+                    <span>|</span>
+                    <span id="day">Loading Day....</span>
+                </div>
+            </div>
+            <div class="c-screen">
+                <div class="screen">
+                    <input type="text" id="expression" aria-label="expression" readonly>
+                    <output id="output" aria-live="polite"></output>
+                </div>
+            </div>
+            <div class="keys" id="keys">
+                <button type="button" class="key" class="mode" id="modeBtn">DEG</button>
+                <button class="key function" data-value="abs(">abs</button>
+                <button class="key function" data-value="sqrt(">√</button>
+                <button class="key function" data-value="^2">x²</button>
+                <button class="key function" data-value="^">x^</button>
+                <button class="key function" data-value="log(">log</button>
+                <button class="key function" data-value="ln(">ln</button>
+                <button class="key operator" data-value="%">%</button>
+                <button class="key function" data-value="pi">π</button>
+                <button class="key function" data-value="sin(">sin</button>
+                <button class="key function" data-value="cos(">cos</button>
+                <button class="key function" data-value="tan(">tan</button>
+                <button class="key operator" data-value="(">(</button>
+                <button class="key operator" data-value=")">)</button>
+                <button class="key function" data-value="e">e</button>
+                <button class="key" data-value="7">7</button>
+                <button class="key" data-value="8">8</button>
+                <button class="key" data-value="9">9</button>
+                <button class="key clear" id="delete-btn" data-action="clear">AC</button>
+                <button class="key clear" id="delete-btn" data-action="delete">DEL</button>
+                <button class="key" data-value="4">4</button>
+                <button class="key" data-value="5">5</button>
+                <button class="key" data-value="6">6</button>               
+                <button class="key operator" data-value="*">×</button>
+                <button class="key operator" data-value="/">÷</button>
+                <button class="key" data-value="1">1</button>
+                <button class="key" data-value="2">2</button>
+                <button class="key" data-value="3">3</button>
+                <button class="key operator" data-value="+">+</button>
+                <button class="key operator" data-value="-">−</button>
+                <button class="key" data-value="0">0</button>
+                <button class="key" data-value=".">.</button>
+                <button class="key" data-value="00">00</button>
+                <button class="key clear" data-action="clear">C</button>
+                <button class="key equals" id="equal-btn" data-action="calculate">=</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const timeElement = document.getElementById("time");
+        const dateElement = document.getElementById("date");
+        const dayElement = document.getElementById("day");
+        const expressionInput = document.getElementById("expression");
+        const output = document.getElementById("output");
+        const keys = document.getElementById("keys");
+        const modeBtn = document.getElementById("modeBtn");
+        // time and date;
+        function updateClock() {
+            const now = new Date();
+            // Hours, minutes, seconds
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, "0");
+            const seconds = String(now.getSeconds()).padStart(2, "0");
+            // AM / PM
+            const ampm = hours >= 12 ? "PM" : "AM";
+            // Convert 24-hour format to 12-hour format
+            hours = hours % 12 || 12;
+            // Add zero before single-digit hours
+            hours = String(hours).padStart(2, "0");
+            // Display time
+            timeElement.textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+            // Display date
+            dateElement.textContent = now.toLocaleDateString("en-PK", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            });
+            // Display day
+            dayElement.textContent = now.toLocaleDateString("en-PK", {
+                weekday: "short"
+            });
+        };
+        updateClock();
+        setInterval(updateClock, 1000);
+        //
+        let isDegree = true;
+        let justCalculated = false;
+        // Display mein value add karna
+        function appendValue(value) {
+            if (justCalculated) {
+                if (/^[0-9.]$/.test(value) || value === "00" || value === "pi" || value === "e") {
+                    expressionInput.value = "";
+                }
+                justCalculated = false;
+            }
+            expressionInput.value += value;
+            output.classList.remove("error");
+        }
+        // Screen clear karna
+        function clearCalculator() {
+            expressionInput.value = "";
+            output.textContent = "0";
+            output.classList.remove("error");
+            justCalculated = false;
+        }
+        // Last character delete karna
+        function deleteLast() {
+            expressionInput.value = expressionInput.value.slice(0, -1);
+            output.classList.remove("error");
+            justCalculated = false;
+        }
+        // Tokenizer: expression ko numbers, functions aur operators mein divide karta hai
+        function tokenize(expression) { // divide in small token piece;
+            const tokens = [];
+            const pattern = /\s*([0-9]+(?:\.[0-9]*)?|\.[0-9]+|[a-zA-Z]+|[()+\-*/%^])/gy;
+            let position = 0;
+            while (position < expression.length) {
+                pattern.lastIndex = position;
+                const match = pattern.exec(expression);
+                if (!match) {
+                    throw new Error("Invalid character");
+                }
+                tokens.push(match[1]);
+                position = pattern.lastIndex;
+            }
+            return tokens;
+        }
+        // Expression parser
+        function calculateExpression(expression) {
+            const tokens = tokenize(expression);
+            let index = 0;
+            function peek() { return tokens[index]; }
+            function consume() { return tokens[index++]; }
+            // Addition and subtraction
+            function parseExpression() {
+                let value = parseTerm();
+                while (peek() === "+" || peek() === "-") {
+                    const operator = consume();
+                    const right = parseTerm();
+                    value = operator === "+" ? value + right : value - right;
+                }
+                return value;
+            }
+            // Multiplication, division and remainder
+            function parseTerm() {
+                let value = parseUnary();
+                while (["*", "/", "%"].includes(peek())) {
+                    const operator = consume();
+                    const right = parseUnary();
+
+                    if (operator === "*") {
+                        value *= right;
+                    } else if (operator === "/") {
+                        if (right === 0) {
+                            throw new Error("Cannot divide by zero");
+                        }
+                        value /= right;
+                    } else {
+                        if (right === 0) {
+                            throw new Error("Cannot divide by zero");
+                        }
+                        value %= right;
+                    }
+                }
+                return value;
+            }
+            // Unary plus/minus
+            function parseUnary() {
+                if (peek() === "+") {
+                    consume();
+                    return parseUnary();
+                }
+                if (peek() === "-") {
+                    consume();
+                    return -parseUnary();
+                }
+                return parsePower();
+            }
+            // Exponents: 2^3, 2^3^2
+            function parsePower() {
+                const base = parsePrimary();
+                if (peek() === "^") {
+                    consume();
+                    return Math.pow(base, parseUnary());
+                }
+                return base;
+            }
+            // Numbers, constants, parentheses and Math functions
+            function parsePrimary() {
+                const token = consume();
+                if (token === undefined) {
+                    throw new Error("Incomplete Value");
+                }
+                if (token === "(") {
+                    const value = parseExpression();
+                    if (consume() !== ")") { throw new Error("Missing closing bracket"); }
+                    return value;
+                }
+                if (token === ")") {
+                    throw new Error("Unexpected bracket");
+                }
+                if (!Number.isNaN(Number(token)) && token !== "") {
+                    return Number(token);
+                }
+                if (token === "pi") {
+                    return Math.PI;
+                }
+                if (token === "e") {
+                    return Math.E;
+                }
+                const allowedFunctions = [
+                    "sin", "cos", "tan",
+                    "sqrt", "log", "ln", "abs"
+                ];
+                if (allowedFunctions.includes(token)) {
+                    if (consume() !== "(") {
+                        throw new Error("Function needs parentheses");
+                    }
+                    const argument = parseExpression();
+                    if (consume() !== ")") {
+                        throw new Error("Missing closing bracket");
+                    }
+                    let result;
+                    switch (token) {
+                        case "sin":
+                            result = Math.sin(toRadians(argument));
+                            break;
+                        case "cos":
+                            result = Math.cos(toRadians(argument));
+                            break;
+                        case "tan":
+                            result = Math.tan(toRadians(argument));
+                            break;
+                        case "sqrt":
+                            result = Math.sqrt(argument);
+                            break;
+                        case "log":
+                            result = Math.log10(argument);
+                            break;
+                        case "ln":
+                            result = Math.log(argument);
+                            break;
+                        case "abs":
+                            result = Math.abs(argument);
+                            break;
+                    }
+                    return result;
+                }
+                throw new Error("Unknown value");
+            }
+            const result = parseExpression();
+            if (index < tokens.length) {
+                throw new Error("Invalid Value");
+            }
+            if (!Number.isFinite(result)) {
+                throw new Error("Result is not a real finite number");
+            }
+            return result;
+        }
+        // Degree ko radians mein convert karna
+        function toRadians(degrees) {
+            return isDegree ? degrees * Math.PI / 180 : degrees;
+        }
+        // Calculate button
+        function calculate() {
+            const expression = expressionInput.value.trim();
+            if (!expression) {
+                output.textContent = "Enter an Value";
+                output.classList.add("error");
+                return;
+            }
+            try {
+                const result = calculateExpression(expression);
+                output.textContent = Number(result.toPrecision(12)).toString();
+                output.classList.remove("error");
+                justCalculated = true;
+            } catch (error) {
+                output.textContent = error.message;
+                output.classList.add("error");
+                justCalculated = false;
+            }
+        }
+        // Buttons click handling
+        keys.addEventListener("click", function (event) {
+            const button = event.target.closest("button");
+            if (!button) return;
+            const action = button.dataset.action;
+            const value = button.dataset.value;
+            if (action === "clear") {
+                clearCalculator();
+            } else if (action === "delete") {
+                deleteLast();
+            } else if (action === "calculate") {
+                calculate();
+            } else if (value !== undefined) {
+                appendValue(value);
+            }
+        });
+        // DEG / RAD toggle
+        modeBtn.addEventListener("click", function () {
+            isDegree = !isDegree;
+            modeBtn.textContent = isDegree ? "DEG" : "RAD";
+        });
+        // Keyboard support
+        document.addEventListener("keydown", function (event) {
+            if (/^[0-9.]$/.test(event.key)) {
+                appendValue(event.key);
+            } else if (["+", "-", "*", "/", "%", "^", "(", ")"].includes(event.key)) {
+                appendValue(event.key);
+            } else if (event.key === "Enter" || event.key === "=") {
+                event.preventDefault();
+                calculate();
+            } else if (event.key === "Backspace") {
+                deleteLast();
+            } else if (event.key === "Escape") {
+                clearCalculator();
+            }
+        });
+    </script>
+</body>
+</html>
